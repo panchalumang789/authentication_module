@@ -17,13 +17,12 @@ export const POST = async (request: NextRequest, response: NextResponse) => {
   });
 
   if (userData == null) {
-    return new NextResponse("Bad Request", { status: 400 });
+    return new NextResponse("User not found with this email.", { status: 400 });
   }
 
   const password = await decryptPassword(userData.password, body.password);
-
   if (!password) {
-    return new NextResponse("Bad Request", { status: 400 });
+    return new NextResponse("Invalid Username or Password", { status: 400 });
   }
 
   const token = jwt.sign(userData, process.env.JWT_SECRET as string);

@@ -4,11 +4,16 @@ import db from "@/db/db";
 import { notFound, redirect } from "next/navigation";
 import { z } from "zod";
 import bcrypt from "bcrypt";
+import { mkdir, writeFile } from "fs/promises";
 
 const generateHashedPassword = async (password: string) => {
   const hashedPassword = await bcrypt.hash(password, 10);
   return hashedPassword;
 };
+
+const imageSchema = z
+  .instanceof(File, { message: "Required" })
+  .refine((file) => file.size === 0 || file.type.startsWith("image/"));
 
 const addSchema = z.object({
   firstname: z.string().min(3, { message: "Enter Valid First Name" }),
@@ -21,6 +26,7 @@ const addSchema = z.object({
   password: z
     .string()
     .min(8, { message: "Password must be 8 characters long" }),
+  profilePhoto: imageSchema.refine((file) => file.size > 0, "Required"),
 });
 
 export async function createUser(prevState: unknown, formData: FormData) {
@@ -31,6 +37,15 @@ export async function createUser(prevState: unknown, formData: FormData) {
 
   const data = result.data;
 
+  await mkdir("public/products", { recursive: true });
+  const profilePhotoPath = `/products/${crypto.randomUUID()}-${
+    data.profilePhoto.name
+  }`;
+  await writeFile(
+    `public${profilePhotoPath}`,
+    Buffer.from(await data.profilePhoto.arrayBuffer())
+  );
+
   const hashedPassword = await generateHashedPassword(data.password);
 
   await db.user.create({
@@ -40,6 +55,7 @@ export async function createUser(prevState: unknown, formData: FormData) {
       email: data.email,
       password: hashedPassword,
       contactNo: data.contactNo,
+      profilePhotoPath,
     },
   });
 

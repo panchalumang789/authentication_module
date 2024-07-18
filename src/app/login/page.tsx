@@ -1,5 +1,5 @@
 "use client";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { NextPage } from "next";
 import { FormEvent } from "react";
 import { useFormStatus } from "react-dom";
@@ -29,7 +29,7 @@ const LoginPage: NextPage<Props> = ({}) => {
     const data = Object.fromEntries(new FormData(event.currentTarget));
     try {
       const response = await axios.post("api/login", data);
-      console.log("page_32-response==>", response);
+
       if (response.statusText === "OK") {
         localStorage.setItem("token", response.data);
         toast({
@@ -38,9 +38,9 @@ const LoginPage: NextPage<Props> = ({}) => {
         router.push("/");
       }
     } catch (error) {
-      const err = error as Error;
+      const err = error as AxiosError;
       toast({
-        title: err.message,
+        title: (err.response?.data as string) || err.message,
         variant: "destructive",
       });
     }

@@ -14,6 +14,9 @@ import {
   Button,
 } from "@mui/material";
 import { createUser } from "../_actions/users";
+import { Input } from "@/components/ui/input";
+import Image from "next/image";
+import { Label } from "@/components/ui/label";
 
 interface Props {}
 
@@ -109,6 +112,17 @@ const SignUpPage: NextPage<Props> = ({}) => {
               />
               {error.password && (
                 <div className="text-destructive text-sm">{error.password}</div>
+              )}
+            </Grid>
+            <Grid item xs={12}>
+              <Input
+                type="file"
+                className="h-14 border border-[#0000003d] hover:border-[#000000de] rounded-sm py-4"
+                id="profilePhoto"
+                name="profilePhoto"
+              />
+              {error.profilePhoto && (
+                <div className="text-destructive">{error.profilePhoto}</div>
               )}
             </Grid>
           </Grid>
