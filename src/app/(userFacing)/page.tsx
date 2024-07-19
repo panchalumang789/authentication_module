@@ -14,15 +14,17 @@ const Page: NextPage<Props> = ({}) => {
   if (userData == null) notFound();
 
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-3 items-center">
       Welcome, {userData?.firstname}
-      <Image
-        className="rounded-full border aspect-square"
-        src={userData.profilePhotoPath || ""}
-        height={100}
-        width={100}
-        alt={`${userData.firstname} Image`}
-      />
+      {userData.profilePhotoPath && (
+        <Image
+          className="rounded-full border aspect-square object-contain"
+          src={userData.profilePhotoPath}
+          height={100}
+          width={100}
+          alt={`${userData.firstname} Image`}
+        />
+      )}
     </div>
   );
 };

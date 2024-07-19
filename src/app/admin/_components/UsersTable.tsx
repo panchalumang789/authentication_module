@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreVertical } from "lucide-react";
 import { DeleteDropDownItem } from "./UserActions";
+import Image from "next/image";
 
 interface Props {}
 
@@ -36,7 +37,18 @@ const UsersTable: NextPage<Props> = async ({}) => {
       <TableBody>
         {users.map((user) => (
           <TableRow key={user.id}>
-            <TableCell>{user.firstname}</TableCell>
+            <TableCell className="flex items-center gap-2">
+              {user.firstname}
+              {user.profilePhotoPath && (
+                <Image
+                  src={user.profilePhotoPath}
+                  height={50}
+                  width={50}
+                  className="aspect-square rounded-full object-contain border"
+                  alt={user.firstname}
+                />
+              )}
+            </TableCell>
             <TableCell>{user.lastname}</TableCell>
             <TableCell>{user.email}</TableCell>
             <TableCell>{user.contactNo}</TableCell>

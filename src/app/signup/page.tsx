@@ -117,7 +117,7 @@ const SignUpPage: NextPage<Props> = ({}) => {
             <Grid item xs={12}>
               <Input
                 type="file"
-                className="h-14 border border-[#0000003d] hover:border-[#000000de] rounded-sm py-4"
+                className="h-14 border text-[#00000099] border-[#0000003d] hover:border-[#000000de] rounded-sm py-4"
                 id="profilePhoto"
                 name="profilePhoto"
               />

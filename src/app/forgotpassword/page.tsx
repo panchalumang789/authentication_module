@@ -1,5 +1,6 @@
 "use client";
 import { NextPage } from "next";
+import { useFormState, useFormStatus } from "react-dom";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {
   Box,
@@ -11,13 +12,13 @@ import {
   Avatar,
   Button,
 } from "@mui/material";
-import { useFormState, useFormStatus } from "react-dom";
-import { updatePassword } from "../_actions/users";
+
+import { forgotPassword } from "../_actions/users";
 
 interface Props {}
 
 const ForgotPasswordPage: NextPage<Props> = ({}) => {
-  const [error, action] = useFormState(updatePassword, {});
+  const [error, action] = useFormState(forgotPassword, {});
 
   return (
     <Container component="main" maxWidth="xs">
@@ -36,50 +37,18 @@ const ForgotPasswordPage: NextPage<Props> = ({}) => {
         <Typography component="h1" variant="h5">
           Forgot Password
         </Typography>
-        <form action={action} className="space-y-8">
-          <Grid container spacing={2}>
-            <Grid xs={12}>
+        <form action={action} className="space-y-8 w-full">
+          <Grid container>
+            <Grid item xs={12}>
               <TextField
-                margin="dense"
                 fullWidth
-                id="contactNo"
-                label="Contact No"
-                name="contactNo"
+                id="email"
+                label="Email"
+                name="email"
                 autoFocus
               />
-              {error?.contactNo && (
-                <div className="text-destructive text-sm">
-                  {error.contactNo}
-                </div>
-              )}
-            </Grid>
-            <Grid xs={12}>
-              <TextField
-                margin="dense"
-                fullWidth
-                id="newPassword"
-                label="New Password"
-                name="newPassword"
-              />
-              {error?.newPassword && (
-                <div className="text-destructive text-sm">
-                  {error.newPassword}
-                </div>
-              )}
-            </Grid>
-            <Grid xs={12}>
-              <TextField
-                margin="dense"
-                fullWidth
-                name="confirmPassword"
-                label="Confirm Password"
-                type="password"
-                id="confirmPassword"
-              />
-              {error?.confirmPassword && (
-                <div className="text-destructive text-sm">
-                  {error.confirmPassword}
-                </div>
+              {error?.email && (
+                <div className="text-destructive text-sm">{error.email}</div>
               )}
             </Grid>
           </Grid>
@@ -103,7 +72,7 @@ function SubmitButton() {
       variant="contained"
       disabled={pending}
     >
-      {pending ? "Processing..." : "Change Password"}
+      {pending ? "Processing..." : "Forgot Password"}
     </Button>
   );
 }
